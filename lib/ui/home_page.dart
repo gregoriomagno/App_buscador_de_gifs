@@ -20,11 +20,11 @@ class _HomePageState extends State<HomePage> {
     if (_search.isEmpty) {
       print("Top20");
       response = await http.get(
-          "https://api.giphy.com/v1/gifs/trending?api_key=7yT5iZB918LfocYrh7wFtHVBbtldayrx&limit=20&rating=G");
+          "https://api.giphy.com/v1/gifs/trending?api_key={API_KEY}&limit=20&rating=G");
     } else {
       print("Pesquisa");
       response = await http.get(
-          "https://api.giphy.com/v1/gifs/search?api_key=7yT5iZB918LfocYrh7wFtHVBbtldayrx&q=$_search&limit=19&offset=$_offset&rating=G&lang=en");
+          "https://api.giphy.com/v1/gifs/search?api_key={API_KEY}&q=$_search&limit=19&offset=$_offset&rating=G&lang=en");
     }
     return json.decode(response.body);
   }
@@ -43,9 +43,9 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         title:
-        //Text("appBar")
-         Image.network("https://developers.giphy.com/static/img/dev-logo-lg.7404c00322a8.gif")
-         ,
+            //Text("appBar")
+            Image.network(
+                "https://developers.giphy.com/static/img/dev-logo-lg.7404c00322a8.gif"),
         centerTitle: true,
       ),
       backgroundColor: Colors.black,
@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                         if (snapshort.hasError) {
                           return Container(
                             child: Text("erro : ${snapshort.error}"),
-                            );
+                          );
                         } else {
                           return _createGifTable(context, snapshort);
                         }
@@ -119,8 +119,10 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (context, index) {
           if (_search.isEmpty || index < snapshot.data["data"].length) {
             return GestureDetector(
-              child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, 
-              image:snapshot.data["data"][index]["images"]["fixed_width"]["url"],
+              child: FadeInImage.memoryNetwork(
+                placeholder: kTransparentImage,
+                image: snapshot.data["data"][index]["images"]["fixed_width"]
+                    ["url"],
                 height: 300.0,
                 fit: BoxFit.cover,
               ),
